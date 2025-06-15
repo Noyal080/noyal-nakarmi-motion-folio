@@ -1,14 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
+import Navbar from "@/components/Navbar";
+import Landing from "@/components/Landing";
+import About from "@/components/About";
+import Projects from "@/components/Projects";
+import Experience from "@/components/Experience";
+import Skills from "@/components/Skills";
+import Contact from "@/components/Contact";
+
+/**
+ * Main portfolio page for Noyal Nakarmi
+ */
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="relative bg-gradient-to-br from-[#23243e] via-[#181927] to-[#161627] min-h-screen w-full font-sans">
+      <Navbar />
+      <main>
+        <Landing />
+        <section id="about"><About /></section>
+        <section id="projects"><Projects /></section>
+        <section id="experience"><Experience /></section>
+        <section id="skills"><Skills /></section>
+        <section id="contact"><Contact /></section>
+      </main>
     </div>
   );
 };
-
 export default Index;
