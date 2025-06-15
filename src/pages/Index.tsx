@@ -10,10 +10,14 @@ import Contact from "@/components/Contact";
 import ShutterIntro from "@/components/ShutterIntro";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Fade-in variants
+// Fade-in variants (fixed transition 'type'!)
 const fadeVariants = {
   hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.75, type: "spring", stiffness: 46 } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.75, type: "spring" as const, stiffness: 46 },
+  },
 };
 
 /**
@@ -57,8 +61,7 @@ const Index = () => {
   }, [introDone]);
 
   // We show <ShutterIntro> if first scroll hasn't finished animation yet
-  const showShutter =
-    triggeredRef.current && !introDone;
+  const showShutter = triggeredRef.current && !introDone;
 
   return (
     <div className="relative bg-gradient-to-br from-[#23243e] via-[#181927] to-[#161627] min-h-screen w-full font-sans">
@@ -137,3 +140,4 @@ const Index = () => {
   );
 };
 export default Index;
+
