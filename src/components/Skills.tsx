@@ -1,5 +1,5 @@
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const skills = [
   "React", "TypeScript", "Tailwind", "Zustand", "Redux",
@@ -7,13 +7,14 @@ const skills = [
   "Jest", "CSS", "HTML", "Node.js", "Next.js", "Vite"
 ];
 
-const gridMotion = {
+// Define correct variants for custom delays with Framer Motion
+const gridMotion: Variants = {
   hidden: { opacity: 0, y: 16 },
-  visible: (i: number) => ({
-    opacity: 1,
+  visible: { 
+    opacity: 1, 
     y: 0,
-    transition: { delay: i * 0.03, duration: 0.4, type: "spring", stiffness: 54 }
-  }),
+    transition: { duration: 0.4, type: "spring", stiffness: 54 }
+  },
 };
 
 const Skills = () => (
@@ -35,8 +36,14 @@ const Skills = () => (
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.6 }}
-          custom={i}
           variants={gridMotion}
+          custom={i}
+          transition={{
+            delay: i * 0.03,
+            duration: 0.4,
+            type: "spring",
+            stiffness: 54,
+          }}
         >
           {skill}
         </motion.span>
