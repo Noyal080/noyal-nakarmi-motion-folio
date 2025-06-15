@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -12,7 +11,7 @@ const shutterPanels = [
   "from-[#647DEE] to-[#23243e]"
 ];
 
-export default function ShutterIntro({ onFinish }: ShutterIntroProps) {
+export default function ShutterIntro({ onFinish }: { onFinish: () => void }) {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
