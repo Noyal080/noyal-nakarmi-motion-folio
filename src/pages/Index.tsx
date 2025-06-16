@@ -6,7 +6,6 @@ import About from "@/components/About";
 import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
 import Skills from "@/components/Skills";
-import Contact from "@/components/Contact";
 import ShutterIntro from "@/components/ShutterIntro";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -21,59 +20,49 @@ const fadeVariants = {
 };
 
 /**
- * Main portfolio page for Noyal Nakarmi with trigger-on-scroll shutter intro + smooth section fade
+ * Main portfolio page for Noyal Nakarmi with shutter intro on first load + smooth section fade
  */
 const Index = () => {
   const [introDone, setIntroDone] = useState(false);
-  // Only trigger shutter on FIRST scroll ever; ignore repeated scrolls
-  const triggeredRef = useRef(false);
+  const [showShutter, setShowShutter] = useState(true);
 
   useEffect(() => {
-    if (introDone) return;
-    // Only attach scroll listener if intro is NOT done
-    const handleScroll = () => {
-      if (!triggeredRef.current && window.scrollY > 0) {
-        triggeredRef.current = true;
-        setIntroDone(false); // Show intro
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [introDone]);
-
-  // On first scroll, show shutter overlay, block scrolling during animation
-  useEffect(() => {
-    if (!triggeredRef.current || introDone) return;
-    const scrollY = window.scrollY;
-    // Prevent scroll during shutter
-    document.body.style.overflow = "hidden";
-    // Remove scroll lock after animation
+    // Show shutter intro on first load
     const timer = setTimeout(() => {
-      document.body.style.overflow = "";
+      setShowShutter(false);
       setIntroDone(true);
     }, 2400);
-    // Snap scroll to top
-    window.scrollTo({ top: 0, behavior: "auto" });
+    
+    // Prevent scrolling during intro
+    document.body.style.overflow = "hidden";
+    
     return () => {
       clearTimeout(timer);
       document.body.style.overflow = "";
     };
-  }, [introDone]);
+  }, []);
 
-  // We show <ShutterIntro> if first scroll hasn't finished animation yet
-  const showShutter = triggeredRef.current && !introDone;
+  useEffect(() => {
+    if (introDone) {
+      document.body.style.overflow = "";
+    }
+  }, [introDone]);
 
   return (
     <div className="relative bg-gradient-to-br from-[#23243e] via-[#181927] to-[#161627] min-h-screen w-full font-sans">
-      {/* Shutter Intro Animation - overlays everything, only appears on first scroll */}
+      {/* Shutter Intro Animation - shows on first load */}
       <AnimatePresence>
         {showShutter && (
           <ShutterIntro
-            onFinish={() => setIntroDone(true)}
+            onFinish={() => {
+              setShowShutter(false);
+              setIntroDone(true);
+            }}
           />
         )}
       </AnimatePresence>
-      {/* Main content (always visible, but fade section containers) */}
+      
+      {/* Main content */}
       <div
         className={
           showShutter
@@ -131,7 +120,75 @@ const Index = () => {
               viewport={{ once: true, amount: 0.5 }}
               variants={fadeVariants}
             >
-              <Contact />
+              <div className="relative px-4 py-24 max-w-3xl mx-auto" id="contact">
+                <motion.h2
+                  className="text-2xl md:text-3xl font-bold mb-10 bg-gradient-to-r from-accent-violet to-accent-blue bg-clip-text text-transparent"
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.8 }}
+                  transition={{ duration: 0.6, type: "spring", stiffness: 48 }}
+                >
+                  Contact Information
+                </motion.h2>
+                <div className="bg-gradient-to-br from-[#23243ecc] to-[#171727cc] border border-accent-violet/30 rounded-xl shadow-lg p-8">
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <h3 className="text-xl font-semibold text-white mb-4">Get In Touch</h3>
+                      <p className="text-gray-300 mb-6">
+                        I'm always open to discussing new opportunities and interesting projects.
+                      </p>
+                    </div>
+                    
+                    <div className="grid gap-4 text-center">
+                      <div className="flex flex-col items-center gap-2">
+                        <span className="text-accent-blue font-semibold">Email</span>
+                        <a 
+                          href="mailto:noyalnakarmi@gmail.com"
+                          className="text-gray-300 hover:text-accent-blue transition-colors"
+                        >
+                          noyalnakarmi@gmail.com
+                        </a>
+                      </div>
+                      
+                      <div className="flex flex-col items-center gap-2">
+                        <span className="text-accent-violet font-semibold">LinkedIn</span>
+                        <a 
+                          href="https://www.linkedin.com/in/noyalnakarmi"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-300 hover:text-accent-violet transition-colors"
+                        >
+                          linkedin.com/in/noyalnakarmi
+                        </a>
+                      </div>
+                      
+                      <div className="flex flex-col items-center gap-2">
+                        <span className="text-accent-blue font-semibold">GitHub</span>
+                        <a 
+                          href="https://github.com/noyalnakarmi"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-300 hover:text-accent-blue transition-colors"
+                        >
+                          github.com/noyalnakarmi
+                        </a>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-center mt-8">
+                      <a
+                        className="px-6 py-3 rounded border border-accent-blue text-accent-blue font-semibold hover:bg-accent-blue hover:text-white transition-colors"
+                        href="#"
+                        download
+                        aria-label="Download CV"
+                        title="Download CV"
+                      >
+                        Download CV
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </section>
         </main>
@@ -140,4 +197,3 @@ const Index = () => {
   );
 };
 export default Index;
-
